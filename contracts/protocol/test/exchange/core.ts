@@ -1035,18 +1035,21 @@ describe('Exchange core', () => {
         });
     });
 
-    describe('getOrderInfo', () => {
+    describe.only('getOrderInfo', () => {
         beforeEach(async () => {
             signedOrder = await orderFactory.newSignedOrderAsync();
         });
-        it('should return the correct orderInfo for an unfilled valid order', async () => {
+        it.only('should return the correct orderInfo for an unfilled valid order', async () => {
             const orderInfo = await exchangeWrapper.getOrderInfoAsync(signedOrder);
             const expectedOrderHash = orderHashUtils.getOrderHashHex(signedOrder);
             const expectedTakerAssetFilledAmount = new BigNumber(0);
             const expectedOrderStatus = OrderStatus.FILLABLE;
+            console.log('*'.repeat(150));
+            console.log(orderInfo);
+            console.log('*'.repeat(150));
             expect(orderInfo.orderHash).to.be.equal(expectedOrderHash);
             expect(orderInfo.orderTakerAssetFilledAmount).to.be.bignumber.equal(expectedTakerAssetFilledAmount);
-            expect(orderInfo.orderStatus).to.equal(expectedOrderStatus);
+            expect(orderInfo.orderStatus).to.be.bignumber.equal(expectedOrderStatus);
         });
         it('should return the correct orderInfo for a fully filled order', async () => {
             await exchangeWrapper.fillOrderAsync(signedOrder, takerAddress);
@@ -1056,7 +1059,7 @@ describe('Exchange core', () => {
             const expectedOrderStatus = OrderStatus.FULLY_FILLED;
             expect(orderInfo.orderHash).to.be.equal(expectedOrderHash);
             expect(orderInfo.orderTakerAssetFilledAmount).to.be.bignumber.equal(expectedTakerAssetFilledAmount);
-            expect(orderInfo.orderStatus).to.equal(expectedOrderStatus);
+            expect(orderInfo.orderStatus).to.be.bignumber.equal(expectedOrderStatus);
         });
         it('should return the correct orderInfo for a partially filled order', async () => {
             const takerAssetFillAmount = signedOrder.takerAssetAmount.div(2);
@@ -1067,7 +1070,7 @@ describe('Exchange core', () => {
             const expectedOrderStatus = OrderStatus.FILLABLE;
             expect(orderInfo.orderHash).to.be.equal(expectedOrderHash);
             expect(orderInfo.orderTakerAssetFilledAmount).to.be.bignumber.equal(expectedTakerAssetFilledAmount);
-            expect(orderInfo.orderStatus).to.equal(expectedOrderStatus);
+            expect(orderInfo.orderStatus).to.be.bignumber.equal(expectedOrderStatus);
         });
         it('should return the correct orderInfo for a cancelled and unfilled order', async () => {
             await exchangeWrapper.cancelOrderAsync(signedOrder, makerAddress);
@@ -1077,7 +1080,7 @@ describe('Exchange core', () => {
             const expectedOrderStatus = OrderStatus.CANCELLED;
             expect(orderInfo.orderHash).to.be.equal(expectedOrderHash);
             expect(orderInfo.orderTakerAssetFilledAmount).to.be.bignumber.equal(expectedTakerAssetFilledAmount);
-            expect(orderInfo.orderStatus).to.equal(expectedOrderStatus);
+            expect(orderInfo.orderStatus).to.be.bignumber.equal(expectedOrderStatus);
         });
         it('should return the correct orderInfo for a cancelled and partially filled order', async () => {
             const takerAssetFillAmount = signedOrder.takerAssetAmount.div(2);
@@ -1089,7 +1092,7 @@ describe('Exchange core', () => {
             const expectedOrderStatus = OrderStatus.CANCELLED;
             expect(orderInfo.orderHash).to.be.equal(expectedOrderHash);
             expect(orderInfo.orderTakerAssetFilledAmount).to.be.bignumber.equal(expectedTakerAssetFilledAmount);
-            expect(orderInfo.orderStatus).to.equal(expectedOrderStatus);
+            expect(orderInfo.orderStatus).to.be.bignumber.equal(expectedOrderStatus);
         });
         it('should return the correct orderInfo for an expired and unfilled order', async () => {
             const currentTimestamp = await getLatestBlockTimestampAsync();
@@ -1101,7 +1104,7 @@ describe('Exchange core', () => {
             const expectedOrderStatus = OrderStatus.EXPIRED;
             expect(orderInfo.orderHash).to.be.equal(expectedOrderHash);
             expect(orderInfo.orderTakerAssetFilledAmount).to.be.bignumber.equal(expectedTakerAssetFilledAmount);
-            expect(orderInfo.orderStatus).to.equal(expectedOrderStatus);
+            expect(orderInfo.orderStatus).to.be.bignumber.equal(expectedOrderStatus);
         });
         it('should return the correct orderInfo for an expired and partially filled order', async () => {
             const takerAssetFillAmount = signedOrder.takerAssetAmount.div(2);
@@ -1115,7 +1118,7 @@ describe('Exchange core', () => {
             const expectedOrderStatus = OrderStatus.EXPIRED;
             expect(orderInfo.orderHash).to.be.equal(expectedOrderHash);
             expect(orderInfo.orderTakerAssetFilledAmount).to.be.bignumber.equal(expectedTakerAssetFilledAmount);
-            expect(orderInfo.orderStatus).to.equal(expectedOrderStatus);
+            expect(orderInfo.orderStatus).to.be.bignumber.equal(expectedOrderStatus);
         });
         it('should return the correct orderInfo for an expired and fully filled order', async () => {
             await exchangeWrapper.fillOrderAsync(signedOrder, takerAddress);
@@ -1129,7 +1132,7 @@ describe('Exchange core', () => {
             const expectedOrderStatus = OrderStatus.FULLY_FILLED;
             expect(orderInfo.orderHash).to.be.equal(expectedOrderHash);
             expect(orderInfo.orderTakerAssetFilledAmount).to.be.bignumber.equal(expectedTakerAssetFilledAmount);
-            expect(orderInfo.orderStatus).to.equal(expectedOrderStatus);
+            expect(orderInfo.orderStatus).to.be.bignumber.equal(expectedOrderStatus);
         });
         it('should return the correct orderInfo for an order with a makerAssetAmount of 0', async () => {
             signedOrder = await orderFactory.newSignedOrderAsync({ makerAssetAmount: new BigNumber(0) });
@@ -1139,7 +1142,7 @@ describe('Exchange core', () => {
             const expectedOrderStatus = OrderStatus.INVALID_MAKER_ASSET_AMOUNT;
             expect(orderInfo.orderHash).to.be.equal(expectedOrderHash);
             expect(orderInfo.orderTakerAssetFilledAmount).to.be.bignumber.equal(expectedTakerAssetFilledAmount);
-            expect(orderInfo.orderStatus).to.equal(expectedOrderStatus);
+            expect(orderInfo.orderStatus).to.be.bignumber.equal(expectedOrderStatus);
         });
         it('should return the correct orderInfo for an order with a takerAssetAmount of 0', async () => {
             signedOrder = await orderFactory.newSignedOrderAsync({ takerAssetAmount: new BigNumber(0) });
@@ -1149,7 +1152,7 @@ describe('Exchange core', () => {
             const expectedOrderStatus = OrderStatus.INVALID_TAKER_ASSET_AMOUNT;
             expect(orderInfo.orderHash).to.be.equal(expectedOrderHash);
             expect(orderInfo.orderTakerAssetFilledAmount).to.be.bignumber.equal(expectedTakerAssetFilledAmount);
-            expect(orderInfo.orderStatus).to.equal(expectedOrderStatus);
+            expect(orderInfo.orderStatus).to.be.bignumber.equal(expectedOrderStatus);
         });
     });
 });
