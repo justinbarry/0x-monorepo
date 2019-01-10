@@ -3,7 +3,8 @@
         "version": "2.2.0",
         "changes": [
             {
-                "note": "Added `MultiAssetProxy`"
+                "note": "Added `MultiAssetProxy`",
+                "pr": 1503
             }
         ]
     },
